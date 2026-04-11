@@ -1,6 +1,8 @@
 #!/bin/bash
 source scripts/.colors
+set -euo pipefail
 
+VERBOSE=0
 while [[ $# -gt 0 ]]; do
   key="$1"
   case $key in
@@ -17,7 +19,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-IMG_NAME=$(echo $IMG_FULL_NAME | sed s/"\/"/"__IMG__"/g | sed s/":"/"__VER__"/g | sed s/"\."/_/g)
+IMG_NAME=$(echo $IMG_FULL_NAME | sed s/"\/"/"__img__"/g | sed s/":"/"__ver__"/g | sed s/"\."/_/g)
 CUSTOM_IMAGE="custom-$IMG_NAME"
 
 # step 1 - if alpine image exists, passes. if not, pulls from image registry
@@ -63,3 +65,4 @@ mv data/$IMG_NAME/index.json  data/$IMG_NAME/manifest.json  data/$IMG_NAME/oci-l
 rm -rf data/$IMG_NAME data/$IMG_NAME.*
 tree data/$CUSTOM_IMAGE -L 1
 tree data/$CUSTOM_IMAGE/metadata
+echo -e "[*] Custom Image Name: [${YELLOW} $CUSTOM_IMAGE ${RESET}]"
