@@ -51,7 +51,6 @@ if [ "$1" == "-v" ]; then
     echo -e "${YELLOW}${YELLOW}   -> Modified os-release file:${RESET}"
     cat os-release
 fi
-# cat data/alpyne/etc/os-release
 cp os-release data/alpyne/etc/os-release
 
 echo -e "[*] STEP 06 - CLEANUP"
