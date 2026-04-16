@@ -2,7 +2,8 @@
 
 ## How to:
 
-At first, clone this repo
+1. Clone this repo
+2. Create `data/` in the root
 
 ### Decompose
 
