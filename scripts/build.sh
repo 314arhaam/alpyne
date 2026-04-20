@@ -21,7 +21,7 @@ done
 
 echo -e ""
 mkdir data/$CUSTOM_IMAGE/STACK
-for f in $(ls data/$CUSTOM_IMAGE/ -U | grep -v metadata | sort -V | xargs); do
+for f in $(ls data/$CUSTOM_IMAGE/ -U | grep -v metadata | grep -v STACK | sort -V | xargs); do
 echo -e "${GREEN} $f ${RESET}"
     cp -r data/$CUSTOM_IMAGE/$f/* data/$CUSTOM_IMAGE/STACK/ -f
 done
