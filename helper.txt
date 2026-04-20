@@ -1,1 +1,0 @@
-sudo ./scripts/decompose.sh -v --image docker.iranserver.com/alpine:latest
