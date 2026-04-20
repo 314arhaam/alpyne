@@ -22,6 +22,8 @@ done
 IMG_NAME=$(echo $IMG_FULL_NAME | sed s/"\/"/"__img__"/g | sed s/":"/"__ver__"/g | sed s/"\."/_/g)
 CUSTOM_IMAGE="custom-$IMG_NAME"
 
+mkdir data 2> /dev/null 
+
 # step 1 - if alpine image exists, passes. if not, pulls from image registry
 echo -e "[*] STEP 01 - PULLING $IMG_FULL_NAME"
 if [ "$(docker images $IMG_FULL_NAME -q)" == "" ]; then
