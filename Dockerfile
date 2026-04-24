@@ -1,5 +1,5 @@
 FROM scratch
 COPY . .
 
-# make a login shell
-CMD ["bin/sh", "-l"]
+# put a command to run container. this is sample for alpine
+# CMD ["bin/sh", "-l"]
