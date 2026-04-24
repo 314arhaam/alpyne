@@ -1,5 +1,8 @@
-$ ls -l && for f in $(ls); do echo -e "\n[*] FILENAME: $f"; cat $f | jq; done;
-total 128
+# Structure of metadata files
+
+## Overview
+
+```bash
 -r--r--r-- 1 root root  9218 Jan  1  1970 25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
 -r--r--r-- 1 root root   241 Jan  1  1970 3d940f86d1354d1660b1c5233c191d93e93dcbbffb39cb0bef0d13b7890fc767
 -r--r--r-- 1 root root  1022 Jan  1  1970 59855d3dceb3ae53991193bd03301e082b2a7faa56a514b03527ae0ec2ce3a95
@@ -10,8 +13,10 @@ total 128
 -rw-r--r-- 1 root root   431 Jan  1  1970 index.json
 -rw-r--r-- 1 root root   234 Jan  1  1970 manifest.json
 -r--r--r-- 1 root root    30 Jan  1  1970 oci-layout
+```
 
-[*] FILENAME: 25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
+## File: `25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659`
+```json
 {
   "manifests": [
     {
@@ -277,8 +282,11 @@ total 128
   "mediaType": "application/vnd.oci.image.index.v1+json",
   "schemaVersion": 2
 }
+```
 
-[*] FILENAME: 3d940f86d1354d1660b1c5233c191d93e93dcbbffb39cb0bef0d13b7890fc767
+## File: ` 3d940f86d1354d1660b1c5233c191d93e93dcbbffb39cb0bef0d13b7890fc767
+
+```json
 {
   "architecture": "unknown",
   "os": "unknown",
@@ -291,8 +299,11 @@ total 128
     ]
   }
 }
+```
 
-[*] FILENAME: 59855d3dceb3ae53991193bd03301e082b2a7faa56a514b03527ae0ec2ce3a95
+## File: ` 59855d3dceb3ae53991193bd03301e082b2a7faa56a514b03527ae0ec2ce3a95
+
+```json
 {
   "schemaVersion": 2,
   "mediaType": "application/vnd.oci.image.manifest.v1+json",
@@ -318,8 +329,11 @@ total 128
     "org.opencontainers.image.version": "3.23.3"
   }
 }
+```
 
-[*] FILENAME: 9e595aac14e0f965871911c846f7913a373999123cbae27d591ec9e51b481582
+## File: ` 9e595aac14e0f965871911c846f7913a373999123cbae27d591ec9e51b481582
+
+```json
 {
   "_type": "https://in-toto.io/Statement/v0.1",
   "predicateType": "https://slsa.dev/provenance/v0.2",
@@ -592,8 +606,11 @@ total 128
     }
   }
 }
+```
 
-[*] FILENAME: a40c03cbb81c59bfb0e0887ab0b1859727075da7b9cc576a1cec2c771f38c5fb
+## File: ` a40c03cbb81c59bfb0e0887ab0b1859727075da7b9cc576a1cec2c771f38c5fb
+
+```json
 {
   "architecture": "amd64",
   "config": {
@@ -627,8 +644,11 @@ total 128
     ]
   }
 }
+```
 
-[*] FILENAME: caa817ad3aea1c72c5caada23e3a3f4d8a0677b444777174f7a9d3d8f025bcdf
+## File: ` caa817ad3aea1c72c5caada23e3a3f4d8a0677b444777174f7a9d3d8f025bcdf
+
+```json
 {
   "_type": "https://in-toto.io/Statement/v0.1",
   "predicateType": "https://spdx.dev/Document",
@@ -3303,8 +3323,10 @@ total 128
     ]
   }
 }
+```
 
-[*] FILENAME: fe2385f276937dcf780967a5385767fd34b34580c8ed8d303a0cd1485a692635
+## File: ` fe2385f276937dcf780967a5385767fd34b34580c8ed8d303a0cd1485a692635
+```json
 {
   "schemaVersion": 2,
   "mediaType": "application/vnd.oci.image.manifest.v1+json",
@@ -3332,8 +3354,11 @@ total 128
     }
   ]
 }
+```
 
-[*] FILENAME: index.json
+## File: ` index.json
+
+```json
 {
   "schemaVersion": 2,
   "mediaType": "application/vnd.oci.image.index.v1+json",
@@ -3350,8 +3375,11 @@ total 128
     }
   ]
 }
+```
 
-[*] FILENAME: manifest.json
+## File: `manifest.json`
+
+```json
 [
   {
     "Config": "blobs/sha256/a40c03cbb81c59bfb0e0887ab0b1859727075da7b9cc576a1cec2c771f38c5fb",
@@ -3363,9 +3391,12 @@ total 128
     ]
   }
 ]
+```
 
-[*] FILENAME: oci-layout
+## File: ` oci-layout
+
+```json
 {
   "imageLayoutVersion": "1.0.0"
 }
-
+```
