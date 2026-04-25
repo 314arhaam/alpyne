@@ -1,7 +1,7 @@
 package dockertools
 
 import (
-	dt "github.com/moby/moby/client"
+	"github.com/moby/moby/client"
 	"context"
 	"fmt"
 	"os"
@@ -24,11 +24,13 @@ func SaveImageToTar(cli *client.Client, ImageName, dst string) error {
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
+	defer ImageData.Close()
 	// create file to save
 	file, err := os.Create(dst)
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
+	defer file.Close()
 	// copy data to file
 	if _, err := io.Copy(file, ImageData); err != nil {
 		return fmt.Errorf("%w", err)
