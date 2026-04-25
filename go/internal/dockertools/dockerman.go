@@ -2,6 +2,10 @@ package dockertools
 
 import (
 	dt "github.com/moby/moby/client"
+	"context"
+	"fmt"
+	"os"
+	"io"
 )
 
 func CreateClient() (*client.Client, error) {
@@ -12,8 +16,22 @@ func CreateClient() (*client.Client, error) {
 	return apiClient, nil
 }
 
-func SaveImageToTar() {
+func SaveImageToTar(cli *client.Client, ImageName, dst string) error {
+	ctx := context.Background()
+	imageName := []string{ImageName}
 	// read image data
+	ImageData, err := cli.ImageSave(ctx, imageName)
+	if err != nil {
+		return fmt.Errorf("%w", err)
+	}
 	// create file to save
+	file, err := os.Create(dst)
+	if err != nil {
+		return fmt.Errorf("%w", err)
+	}
 	// copy data to file
+	if _, err := io.Copy(file, ImageData); err != nil {
+		return fmt.Errorf("%w", err)
+	}
+	return nil
 }
