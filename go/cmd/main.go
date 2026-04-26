@@ -3,6 +3,7 @@ package main
 import (
 	dt "local/alpyne/internal/dockertools"
 	tt "local/alpyne/internal/tartools"
+	ct "local/alpyne/internal/clitools"
 	"local/alpyne/internal/iotools"
 	"fmt"
 	"strconv"
@@ -12,7 +13,9 @@ import (
 )
 
 func main() {
-	imageName := "docker.iranserver.com/alpine:latest"
+	cliargs := ct.CLIArgs{}
+	cliargs.Init()
+	imageName := (*cliargs.ImageName) // "docker.iranserver.com/alpine:latest"
 	dirName := "IMG_" + strings.Map(func(r rune) rune {
 		if r == '.' || r == '/' || r == ':' {
 			return '_'
@@ -64,4 +67,5 @@ func main() {
 		)
 	}
 	os.RemoveAll(path.Join(dirName, "blobs"))
+	fmt.Println("Decomposed finished, data available in: ", dirName)
 }
