@@ -7,7 +7,10 @@ import (
 )
 
 func UnTar(filename, dst string) error {
-	if err := os.Mkdir(dst, 0o755); err != nil {
+	switch err := os.Mkdir(dst, 0o755); err != nil {
+	case os.IsExist(err):
+		fmt.Println("File exists, re-write")
+	default:
 		return fmt.Errorf("%w", err)
 	}
 	cmd := exec.Command("tar", "-xvf", filename, "-C", dst)
