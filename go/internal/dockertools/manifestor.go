@@ -15,11 +15,11 @@ type Manifest struct {
 func ReadManifest(m *[]Manifest, filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
-		return fmt.Errorf("%w", err)
+		return fmt.Errorf("manifestor.go: ReadManifest(...): Create file stage: %w", err)
 	}
 	defer file.Close()
 	if err := json.NewDecoder(file).Decode(m); err != nil {
-		return fmt.Errorf("%w", err)
+		return fmt.Errorf("manifestor.go: ReadManifest(...): Decoding stage: %w", err)
 	}
 	return nil
 }
