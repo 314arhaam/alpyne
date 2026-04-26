@@ -24,7 +24,7 @@ func main() {
 	}, imageName)
 	imageTar := dirName + ".tar"
 	// Print some stuff
-	fmt.Println("[*] Processing Image: ", imageName)
+	fmt.Println("[*] Processing Image:		", imageName)
 	cli, err := dt.CreateClient()
 	if err != nil {
 		fmt.Println("main.go:", err)
@@ -34,7 +34,7 @@ func main() {
 		fmt.Println("main.go:", err)
 		return
 	}
-	fmt.Println("	-> Tar file: ", imageTar)
+	fmt.Println("	-> Tar file:		", imageTar)
 	if !(*cliargs.Keep){
 		defer os.Remove(imageTar)
 	}
@@ -42,7 +42,7 @@ func main() {
 		fmt.Println("main.go:", err)
 		return
 	}
-	fmt.Println("	-> Contents dir: ", dirName)
+	fmt.Println("	-> Contents dir:	", dirName)
 	var man []dt.Manifest
 	fmt.Println("[*] Processing Layers")
 	if err := dt.ReadManifest(&man, path.Join(dirName,"manifest.json")); err != nil {
@@ -65,15 +65,17 @@ func main() {
 			return
 		}
 	}
+	fmt.Println("[*] Processing Metadata")
 	iotools.SafeMkdir(path.Join(dirName, "metadata"))
 	files, _ := os.ReadDir(path.Join(dirName, "blobs/sha256"))
 	for _, i := range files {
-		//fmt.Println(i.Name())
+		fmt.Printf("	-> Moving blobs/sha256/%s to metadata/\n", i.Name())
 		os.Rename(
 			path.Join(dirName, "blobs/sha256", i.Name()), 
 			path.Join(dirName, "metadata", i.Name()),
 		)
 	}
+	fmt.Println("[*] Clean Up")
 	os.RemoveAll(path.Join(dirName, "blobs"))
 	//fmt.Println("Decomposed finished, data available in: ", dirName)
 }
