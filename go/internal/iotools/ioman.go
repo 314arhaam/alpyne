@@ -11,6 +11,6 @@ func SafeMkdir(dst string) error {
 		fmt.Println("File exists, re-write")
 		return nil
 	default:
-		return fmt.Errorf("%w", err)
+		return fmt.Errorf("ioman.go: SafeMkdir(...): Create directory error: %w", err)
 	}
 }
