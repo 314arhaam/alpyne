@@ -32,7 +32,9 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	defer os.Remove(imageTar)
+	if !(*cliargs.Keep){
+		defer os.Remove(imageTar)
+	}
 	if err := tt.UnTar(imageTar, dirName); err != nil {
 		fmt.Println(err)
 		return
