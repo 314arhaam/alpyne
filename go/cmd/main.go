@@ -35,16 +35,16 @@ func main() {
 		return
 	}
 	var man []dt.Manifest
-	if err := dt.ReadManifest(&man, dirName + "/manifest.json"); err != nil {
+	if err := dt.ReadManifest(&man, path.Join(dirName,"manifest.json")); err != nil {
 		fmt.Printf("%w", err)
 		return
 	}
 	fmt.Println(man)
 	fmt.Println(len(man[0].Layers))
-	for i, f := range man[0].Layers {
+	for i, layerSHA256Name := range man[0].Layers {
 		folderName := path.Join(dirName, "LAYER_" + strconv.Itoa(i))
-		layerFile := path.Join(dirName, f)
-		fmt.Println(folderName, f)
+		layerFile := path.Join(dirName, layerSHA256Name)
+		fmt.Println(folderName, layerSHA256Name)
 		if err := tt.UnTar(layerFile, folderName); err != nil {
 			fmt.Println("Error in deep un-tar", err)
 			return
@@ -55,8 +55,8 @@ func main() {
 		}
 	}
 	iotools.SafeMkdir(path.Join(dirName, "metadata"))
-	a, _ := os.ReadDir(path.Join(dirName, "blobs/sha256"))
-	for _, i := range a {
+	files, _ := os.ReadDir(path.Join(dirName, "blobs/sha256"))
+	for _, i := range files {
 		fmt.Println(i.Name())
 		os.Rename(
 			path.Join(dirName, "blobs/sha256", i.Name()), 
