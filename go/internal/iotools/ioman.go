@@ -1,4 +1,4 @@
-package iotoools
+package iotools
 
 import (
 	"os"
