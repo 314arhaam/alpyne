@@ -5,3 +5,4 @@ check.go
 go.mod
 go.sum
 image_data/
+IMG_*
