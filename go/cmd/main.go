@@ -8,11 +8,12 @@ import (
 	"strconv"
 	"os"
 	"strings"
+	"path"
 )
 
 func main() {
 	imageName := "docker.iranserver.com/alpine:latest"
-	dirName := strings.Map(func(r rune) rune {
+	dirName := "IMG_" + strings.Map(func(r rune) rune {
 		if r == '.' || r == '/' || r == ':' {
 			return '_'
 		}
@@ -39,8 +40,8 @@ func main() {
 	fmt.Println(man)
 	fmt.Println(len(man[0].Layers))
 	for i, f := range man[0].Layers {
-		folderName := dirName + "/LAYER_" + strconv.Itoa(i)
-		layerFile := dirName + "/" + f
+		folderName := path.Join(dirName, "LAYER_" + strconv.Itoa(i))
+		layerFile := path.Join(dirName, f)
 		fmt.Println(folderName, f)
 		if err := tt.UnTar(layerFile, folderName); err != nil {
 			fmt.Println("Error in deep un-tar", err)
@@ -51,11 +52,14 @@ func main() {
 			return
 		}
 	}
-	iotools.SafeMkdir(dirName + "/metadata")
-	a, _ := os.ReadDir(dirName + "/blobs/sha256")
+	iotools.SafeMkdir(path.Join(dirName, "metadata"))
+	a, _ := os.ReadDir(path.Join(dirName, "blobs/sha256"))
 	for _, i := range a {
 		fmt.Println(i.Name())
-		os.Rename(dirName + "/blobs/sha256/" + i.Name(), dirName + "/metadata/" + i.Name())
+		os.Rename(
+			path.Join(dirName, "blobs/sha256", i.Name()), 
+			path.Join(dirName, "metadata", i.Name()),
+		)
 	}
-	os.RemoveAll(dirName + "/blobs")
+	os.RemoveAll(path.Join(dirName, "blobs"))
 }
