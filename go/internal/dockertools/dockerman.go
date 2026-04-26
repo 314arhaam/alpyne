@@ -22,18 +22,18 @@ func SaveImageToTar(cli *client.Client, ImageName, dst string) error {
 	// read image data
 	ImageData, err := cli.ImageSave(ctx, imageName)
 	if err != nil {
-		return fmt.Errorf("%w", err)
+		return fmt.Errorf("dockerman.go: SaveImageToTar(...): ImageSave stage: %w", err)
 	}
 	defer ImageData.Close()
 	// create file to save
 	file, err := os.Create(dst)
 	if err != nil {
-		return fmt.Errorf("%w", err)
+		return fmt.Errorf("dockerman.go: SaveImageToTar(...): Create output file stage: %w", err)
 	}
 	defer file.Close()
 	// copy data to file
 	if _, err := io.Copy(file, ImageData); err != nil {
-		return fmt.Errorf("%w", err)
+		return fmt.Errorf("dockerman.go: SaveImageToTar(...): Write to file stage: %w", err)
 	}
 	return nil
 }
