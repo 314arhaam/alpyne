@@ -39,8 +39,8 @@ func main() {
 		fmt.Printf("%w", err)
 		return
 	}
-	fmt.Println(man)
-	fmt.Println(len(man[0].Layers))
+	// fmt.Println(man)
+	// fmt.Println(len(man[0].Layers))
 	for i, layerSHA256Name := range man[0].Layers {
 		folderName := path.Join(dirName, "LAYER_" + strconv.Itoa(i))
 		layerFile := path.Join(dirName, layerSHA256Name)
