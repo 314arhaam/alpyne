@@ -1,4 +1,4 @@
 .PHONY: build
 
 build:
-	@go build -o bin/main cmd/main.go
+	@go build -o bin/alpyne cmd/main.go
