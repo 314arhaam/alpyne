@@ -16,8 +16,15 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	if err := tt.UnTar("alp.tar", "alpdata"); err != nil {
+	if err := tt.UnTar("alp.tar", "image_data"); err != nil {
 		fmt.Println()
 		return
 	}
+	var man []dt.Manifest
+	if err := dt.ReadManifest(&man, "image_data/manifest.json"); err != nil {
+		fmt.Printf("%w", err)
+		return
+	}
+	fmt.Println(man)
+	fmt.Println(len(man[0].Layers))
 }
