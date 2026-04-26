@@ -63,4 +63,5 @@ func main() {
 		)
 	}
 	os.RemoveAll(path.Join(dirName, "blobs"))
+	os.Remove(imageTar)
 }
