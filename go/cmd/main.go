@@ -19,16 +19,17 @@ func main() {
 		}
 		return r
 	}, imageName)
+	imageTar := dirName + ".tar"
 	cli, err := dt.CreateClient()
 	if err != nil {
 		fmt.Println()
 		return
 	}
-	if err := dt.SaveImageToTar(cli, imageName, "alp.tar"); err != nil {
+	if err := dt.SaveImageToTar(cli, imageName, imageTar); err != nil {
 		fmt.Println(err)
 		return
 	}
-	if err := tt.UnTar("alp.tar", dirName); err != nil {
+	if err := tt.UnTar(imageTar, dirName); err != nil {
 		fmt.Println(err)
 		return
 	}
