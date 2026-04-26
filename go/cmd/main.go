@@ -3,6 +3,7 @@ package main
 import (
 	dt "local/alpyne/internal/dockertools"
 	tt "local/alpyne/internal/tartools"
+	"local/alpyne/internal/iotools"
 	"fmt"
 	"strconv"
 	"os"
@@ -42,4 +43,11 @@ func main() {
 			return
 		}
 	}
+	iotools.SafeMkdir("image_data/metadata")
+	a, _ := os.ReadDir("image_data/blobs/sha256")
+	for _, i := range a {
+		fmt.Println(i.Name())
+		os.Rename("image_data/blobs/sha256/" + i.Name(), "image_data/metadata/" + i.Name())
+	}
+	os.RemoveAll("image_data/blobs")
 }
