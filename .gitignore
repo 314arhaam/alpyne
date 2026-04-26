@@ -1,6 +1,7 @@
-data/*
-bin/*
+data/
+bin/
 check.go
 *.tar
 go.mod
 go.sum
+image_data/
