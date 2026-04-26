@@ -4,13 +4,11 @@ import (
 	"os"
 	"os/exec"
 	"fmt"
+	"local/alpyne/internal/iotools"
 )
 
 func UnTar(filename, dst string) error {
-	switch err := os.Mkdir(dst, 0o755); err != nil {
-	case os.IsExist(err):
-		fmt.Println("File exists, re-write")
-	default:
+	if err := iotools.SafeMkdir(dst); err != nil {
 		return fmt.Errorf("%w", err)
 	}
 	cmd := exec.Command("tar", "-xvf", filename, "-C", dst)
