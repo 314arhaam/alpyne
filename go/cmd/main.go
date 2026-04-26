@@ -4,6 +4,8 @@ import (
 	dt "local/alpyne/internal/dockertools"
 	tt "local/alpyne/internal/tartools"
 	"fmt"
+	"strconv"
+	"os"
 )
 
 func main() {
@@ -17,7 +19,7 @@ func main() {
 		return
 	}
 	if err := tt.UnTar("alp.tar", "image_data"); err != nil {
-		fmt.Println()
+		fmt.Println(err)
 		return
 	}
 	var man []dt.Manifest
@@ -27,4 +29,17 @@ func main() {
 	}
 	fmt.Println(man)
 	fmt.Println(len(man[0].Layers))
+	for i, f := range man[0].Layers {
+		folderName := "image_data/LAYER_" + strconv.Itoa(i)
+		layerFile := "image_data/" + f
+		fmt.Println(folderName, f)
+		if err := tt.UnTar(layerFile, folderName); err != nil {
+			fmt.Println("Error in deep un-tar", err)
+			return
+		}
+		if err := os.Remove(layerFile); err != nil {
+			fmt.Println("Error in deep un-tar - Removal", err)
+			return
+		}
+	}
 }
