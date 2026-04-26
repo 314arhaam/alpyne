@@ -1,4 +1,4 @@
 .PHONY: build
 
-build-api:
+build:
 	@go build -o bin/main cmd/main.go
