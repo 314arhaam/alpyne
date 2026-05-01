@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           ls -lh
-          chmod +x alpyne
+          chmod +x ./go/alpyne
       - name: pull_alpine_image
         shell: bash
         run: |
@@ -34,6 +34,6 @@ jobs:
       - name: decompress_with_alpyne
         shell: bash
         run: |
-          ./alpyne -i alpine:latest -k
+          ./go/alpyne -i alpine:latest -k
           ls -lh
           
