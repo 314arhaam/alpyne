@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: check_docker
+      - name: Check docker
         shell: bash
         run: |
           docker ps
@@ -26,7 +26,7 @@ jobs:
       - name: Go mod tidy
         working-directory: ./go
         run: go mod tidy
-      - name: build
+      - name: Build go binaries
         working-directory: ./go
         shell: bash
         run: |
