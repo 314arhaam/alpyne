@@ -36,8 +36,9 @@ jobs:
 
       - name: build
         shell: bash
+        working-directory: ./go
         run: |
-          GOOS='${{ matrix.goos }}' GOARCH='amd64' CGO_ENABLED=0 go build -o '${{ matrix.bin }}' go/cmd/main.go
+          GOOS='${{ matrix.goos }}' GOARCH='amd64' CGO_ENABLED=0 go build -o '${{ matrix.bin }}' ./cmd/main.go
 
       - uses: actions/upload-artifact@v4
         with:
