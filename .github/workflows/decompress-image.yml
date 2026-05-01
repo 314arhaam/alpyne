@@ -10,16 +10,17 @@ jobs:
         shell: bash
         run: |
           docker ps
-      - uses: actions/setup-go@v5
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.25'
       - name: Go mod tidy
         working-directory: ./go
         run: go mod tidy
       - name: build
         shell: bash
         run: |
-          GOOS='linux' GOARCH='amd64' CGO_ENABLED=0 go build -o alpyne go/cmd/main.go
+          GOOS='linux' GOARCH='amd64' CGO_ENABLED=0 go build -o alpyne ./go/cmd/main.go
       - name: verify_build
         shell: bash
         run: |
