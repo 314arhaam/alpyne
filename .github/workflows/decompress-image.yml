@@ -1,8 +1,14 @@
 name: "Decompress alpine image"
+
 on: 
   workflow_dispatch:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
 jobs:
-  pull_alpine:
+  decompress_with_alpyne:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -10,6 +16,9 @@ jobs:
         shell: bash
         run: |
           docker ps
+      - name: Download and install tree
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y tree
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
@@ -22,18 +31,27 @@ jobs:
         shell: bash
         run: |
           GOOS='linux' GOARCH='amd64' CGO_ENABLED=0 go build -o alpyne ./cmd/main.go
-      - name: verify_build
+      - name: Add execute permission
         shell: bash
         run: |
           ls -lh
           chmod +x ./go/alpyne
-      - name: pull_alpine_image
+      - name: Pull alpine image
         shell: bash
         run: |
           docker pull alpine:latest
-      - name: decompress_with_alpyne
+      - name: Decompress alpine
         shell: bash
         run: |
           ./go/alpyne -i alpine:latest -k
-          ls -lh
+          tree IMG_alpine_latest -L 2
+      - name: Pull redis image
+        shell: bash
+        run: |
+          docker pull redis:latest
+      - name: Decompress redis
+        shell: bash
+        run: |
+          ./go/alpyne -i redis:latest -k
+          tree IMG_redis_latest -L 2
           
