@@ -3,7 +3,7 @@ name: send_artifacts_tg
 on:
   workflow_run:
     workflows: ["build_and_release"]
-    branches: [master]
+    branches: ["v*"]
     types: 
       - completed
   workflow_dispatch:
