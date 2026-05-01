@@ -1,4 +1,4 @@
-name: send_artifacts_tg
+name: Send release artifacts to Telegram
 
 on:
   workflow_run:
@@ -45,7 +45,7 @@ jobs:
 
       - name: Generate custom styled message
         id: custom_message
-        run: MESSAGE="🚀 *Release \`${{ github.event.inputs.tag }}\`* 🚀"
+        run: MESSAGE="🚀 *Release \`${{ github.ref_name }}\`* 🚀"
 
       - name: Send styled message to Telegram
         env:
@@ -53,7 +53,7 @@ jobs:
           TELEGRAM_CHAT_ID_CHANNEL: ${{ secrets.TELEGRAM_CHAT_ID_CHANNEL }}
         run: |
           REPO_NAME=${{ github.event.repository.name }}
-          TAG_NAME=${{ github.event.inputs.tag }}
+          TAG_NAME=${{ github.ref_name }}
           REPO_LINK="https://github.com/314arhaam/$REPO_NAME/releases/tag/$TAG_NAME"
           curl -s -X POST \
             -d chat_id="$TELEGRAM_CHAT_ID_CHANNEL" \
@@ -77,7 +77,7 @@ jobs:
               CAPTION="📦 \ 
             *File:* \`$FILE\` \ 
             *SHA256:* \`$CHECKSUM\` \ 
-            _Tag:_ \`${{ github.event.inputs.tag }}\` \
+            _Tag:_ \`${{ github.ref_name }}\` \
               "
               curl -s -X POST \
                 -F "chat_id=$TELEGRAM_CHAT_ID_CHANNEL" \
