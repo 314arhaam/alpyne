@@ -23,7 +23,7 @@ jobs:
       - name: Download release assets
         uses: robinraju/release-downloader@v1
         with:
-          tag: ${{ github.event.inputs.tag }}
+          tag: ${{ github.ref_name }}
           fileName: 'alpyne-*'
           tarBall: false
           zipBall: false
