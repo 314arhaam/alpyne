@@ -1,0 +1,11 @@
+name: "Decompress alpine image"
+on: 
+  workflow_dispatch:
+jobs:
+  pull_alpine:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: check_docker
+        shell: bash
+        run: |
+          docker ps
