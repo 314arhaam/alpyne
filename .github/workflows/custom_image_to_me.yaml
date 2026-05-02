@@ -40,12 +40,13 @@ jobs:
       - name: Pull image
         shell: bash
         run: |
-          docker pull redis:latest
+          docker pull ${{ github.event.inputs.image_name }}
       - name: Decompress image
         shell: bash
         run: |
           ./go/alpyne -i ${{ github.event.inputs.image_name }} -k
-          tree IMG_redis_latest >> tree.txt
+          tree IMG_* >> tree.txt
+          tree IMG_* -L 2 >> tree_l2.txt
 
       - name: Send binaries and checksums to Telegram
         env:
@@ -54,7 +55,14 @@ jobs:
         run: |
           echo "Uploading data to Telegram..."
 
-          # Also send the checksums.txt file
+          # short
+          curl -s -X POST \
+            -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
+            -F "caption=Decompressed `${{ github.event.inputs.image_name }}`" \
+            -F "parse_mode=MarkdownV2" \
+            -F "document=@tree_l2.txt" \
+            "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
+          # long
           curl -s -X POST \
             -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
             -F "caption=Decompressed `${{ github.event.inputs.image_name }}`" \
