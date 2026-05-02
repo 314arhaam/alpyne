@@ -66,5 +66,5 @@ jobs:
         shell: bash
         run: |
           IMG_NAME=${{ matrix.image_name }}
-          DIR_NAME=$(echo $IMG_NAME | sed s/"\."/_/g | sed s/"\/"/_/g | sed s/":"/_/g)
+          DIR_NAME="IMG_$(echo $IMG_NAME | sed s/"\."/_/g | sed s/"\/"/_/g | sed s/":"/_/g)"
           ./go/alpyne -i $IMG_NAME -k && tree -L 2 $DIR_NAME
