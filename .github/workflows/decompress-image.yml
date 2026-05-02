@@ -65,7 +65,7 @@ jobs:
       
       - name: Decompress clickhouse
         shell: bash
-        run: ./go/alpyne -i cliclhouse/clickhouse-server -k && tree IMG_click* -L 2
+        run: ./go/alpyne -i clickhouse/clickhouse-server -k && tree IMG_click* -L 2
 
       - name: Pull python3.14 image
         shell: bash
