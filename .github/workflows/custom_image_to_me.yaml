@@ -1,0 +1,63 @@
+name: "Decompress alpine image"
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_name:
+        description: 'Name of the image to decompress'
+        required: true
+        type: string
+
+jobs:
+  decompress_with_alpyne:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check docker
+        shell: bash
+        run: |
+          docker ps
+      - name: Download and install tree
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y tree
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - name: Go mod tidy
+        working-directory: ./go
+        run: go mod tidy
+      - name: Build go binaries
+        working-directory: ./go
+        shell: bash
+        run: |
+          GOOS='linux' GOARCH='amd64' CGO_ENABLED=0 go build -o alpyne ./cmd/main.go
+      - name: Add execute permission
+        shell: bash
+        run: |
+          ls -lh
+          chmod +x ./go/alpyne
+      - name: Pull image
+        shell: bash
+        run: |
+          docker pull redis:latest
+      - name: Decompress image
+        shell: bash
+        run: |
+          ./go/alpyne -i ${{ github.event.inputs.image_name }} -k
+          tree IMG_redis_latest >> tree.txt
+
+      - name: Send binaries and checksums to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID_ME: ${{ secrets.TELEGRAM_CHAT_ID_ME }}
+        run: |
+          echo "Uploading data to Telegram..."
+
+          # Also send the checksums.txt file
+          curl -s -X POST \
+            -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
+            -F "caption=Decompressed `${{ github.event.inputs.image_name }}`" \
+            -F "parse_mode=MarkdownV2" \
+            -F "document=@tree.txt" \
+            "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
