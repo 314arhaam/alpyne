@@ -10,6 +10,7 @@ import (
 	"os"
 	"strings"
 	"path"
+	"log"
 )
 
 func main() {
@@ -27,27 +28,23 @@ func main() {
 	fmt.Println("[*] Processing Image:		", imageName)
 	cli, err := dt.CreateClient()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "main.go:", err)
-		return
+		log.Fatalf("main.go:", err)
 	}
 	if err := dt.SaveImageToTar(cli, imageName, imageTar); err != nil {
-		fmt.Fprintln(os.Stderr, "main.go:", err)
-		return
+		log.Fatalf("main.go:", err)
 	}
 	fmt.Println("	-> Tar file:		", imageTar)
 	if !(*cliargs.Keep){
 		defer os.Remove(imageTar)
 	}
 	if err := tt.UnTar(imageTar, dirName); err != nil {
-		fmt.Fprintln(os.Stderr, "main.go:", err)
-		return
+		log.Fatalf("main.go:", err)
 	}
 	fmt.Println("	-> Contents dir:	", dirName)
 	var man []dt.Manifest
 	fmt.Println("[*] Processing Layers")
 	if err := dt.ReadManifest(&man, path.Join(dirName,"manifest.json")); err != nil {
-		fmt.Fprintln(os.Stderr, "main.go:", err)
-		return
+		log.Fatalf("main.go:", err)
 	}
 	// fmt.Println(man)
 	// fmt.Println(len(man[0].Layers))
@@ -57,12 +54,10 @@ func main() {
 		// fmt.Println(folderName, layerSHA256Name)
 		fmt.Printf("	-> Layer %3d of %3d @ %s\n", i+1, len(man[0].Layers), folderName)
 		if err := tt.UnTar(layerFile, folderName); err != nil {
-			fmt.Fprintln(os.Stderr, "main.go: error in deep un-tar", err)
-			return
+			log.Fatalf("main.go: error in deep un-tar", err)
 		}
 		if err := os.Remove(layerFile); err != nil {
-			fmt.Fprintln(os.Stderr, "main.go: error in deep un-tar - Removal", err)
-			return
+			log.Fatalf("main.go: error in deep un-tar - Removal", err)
 		}
 	}
 	fmt.Println("[*] Processing Metadata")
