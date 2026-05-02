@@ -1,4 +1,4 @@
-name: "Decompress alpine image"
+name: "Custom Decompress"
 
 on:
   workflow_dispatch:
