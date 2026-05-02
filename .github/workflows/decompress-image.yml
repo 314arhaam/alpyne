@@ -61,7 +61,7 @@ jobs:
       
       - name: Pull clickhouse image
         shell: bash
-        run: docker pull cliclhouse/clickhouse-server
+        run: docker pull clickhouse/clickhouse-server
       
       - name: Decompress clickhouse
         shell: bash
