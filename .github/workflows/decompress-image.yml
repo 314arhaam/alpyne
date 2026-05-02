@@ -1,4 +1,4 @@
-name: "Decompress alpine image"
+name: "Test decompressing images"
 
 on: 
   workflow_dispatch:
@@ -14,15 +14,16 @@ jobs:
       matrix:
         include:
           - image_name: alpine:latest
-            dir_name: IMG_alpine_latest
+            #dir_name: IMG_alpine_latest
           - image_name: redis:latest
-            dir_name: IMG_redis_latest
+            #dir_name: IMG_redis_latest
           - image_name: python:3.14-slim
-            dir_name: IMG_python_3_14-slim
-          - image_name: mysql:latest
-            dir_name: IMG_mysql_latest
-          - image_name: clickhouse/clickhouse-server
-            dir_name: IMG_clickhouse_clickhouse-server
+            #dir_name: IMG_python_3_14-slim
+          - image_name: gcr.io/distroless/static-debian12
+          #- image_name: mysql:latest
+          #  dir_name: IMG_mysql_latest
+          #- image_name: clickhouse/clickhouse-server
+          #  dir_name: IMG_clickhouse_clickhouse-server
     runs-on: ubuntu-22.04
     steps:
       
@@ -63,4 +64,7 @@ jobs:
       
       - name: Decompress ${{ matrix.image_name }}
         shell: bash
-        run: ./go/alpyne -i ${{ matrix.image_name }} -k && tree -L 2 ${{ matrix.dir_name }}
+        run: |
+          IMG_NAME=${{ matrix.image_name }}
+          DIR_NAME=$(echo $IMG_NAME | sed s/"\."/_/g | sed s/"\/"/_/g | sed s/":"/_/g)
+          ./go/alpyne -i $IMG_NAME -k && tree -L 2 $DIR_NAME
