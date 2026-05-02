@@ -44,11 +44,9 @@ jobs:
           go-version: '1.25'
       
       - name: Go mod tidy
-        working-directory: ./go
         run: go mod tidy
       
       - name: Build go binaries
-        working-directory: ./go
         shell: bash
         run: GOOS='linux' GOARCH='amd64' CGO_ENABLED=0 go build -o alpyne ./cmd/main.go
       
@@ -56,7 +54,7 @@ jobs:
         shell: bash
         run: |
           ls -lh
-          chmod +x ./go/alpyne
+          chmod +x ./alpyne
       
       - name: Pull ${{ matrix.image_name }}
         shell: bash
@@ -67,4 +65,4 @@ jobs:
         run: |
           IMG_NAME=${{ matrix.image_name }}
           DIR_NAME="IMG_$(echo $IMG_NAME | sed s/"\."/_/g | sed s/"\/"/_/g | sed s/":"/_/g)"
-          ./go/alpyne -i $IMG_NAME -k && tree -L 2 $DIR_NAME
+          ./alpyne -i $IMG_NAME -k && tree -L 2 $DIR_NAME
