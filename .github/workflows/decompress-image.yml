@@ -11,47 +11,74 @@ jobs:
   decompress_with_alpyne:
     runs-on: ubuntu-22.04
     steps:
+      
       - uses: actions/checkout@v4
+      
       - name: Check docker
         shell: bash
         run: |
           docker ps
+      
       - name: Download and install tree
         shell: bash
         run: sudo apt-get update && sudo apt-get install -y tree
+      
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.25'
+      
       - name: Go mod tidy
         working-directory: ./go
         run: go mod tidy
+      
       - name: Build go binaries
         working-directory: ./go
         shell: bash
-        run: |
-          GOOS='linux' GOARCH='amd64' CGO_ENABLED=0 go build -o alpyne ./cmd/main.go
+        run: GOOS='linux' GOARCH='amd64' CGO_ENABLED=0 go build -o alpyne ./cmd/main.go
+      
       - name: Add execute permission
         shell: bash
         run: |
           ls -lh
           chmod +x ./go/alpyne
+      
       - name: Pull alpine image
         shell: bash
-        run: |
-          docker pull alpine:latest
+        run: docker pull alpine:latest
+      
       - name: Decompress alpine
         shell: bash
-        run: |
-          ./go/alpyne -i alpine:latest -k
-          tree IMG_alpine_latest -L 2
+        run: ./go/alpyne -i alpine:latest -k && tree IMG_alpine_latest -L 2
+      
       - name: Pull redis image
         shell: bash
-        run: |
-          docker pull redis:latest
+        run: docker pull redis:latest
+      
       - name: Decompress redis
         shell: bash
-        run: |
-          ./go/alpyne -i redis:latest -k
-          tree IMG_redis_latest -L 2
+        run: ./go/alpyne -i redis:latest -k && tree IMG_redis_latest -L 2
+      
+      - name: Pull clickhouse image
+        shell: bash
+        run: docker pull cliclhouse/clickhouse-server
+      
+      - name: Decompress clickhouse
+        shell: bash
+        run: ./go/alpyne -i cliclhouse/clickhouse-server -k && tree IMG_click* -L 2
+
+      - name: Pull python3.14 image
+        shell: bash
+        run: docker pull python:3.14-slim
+      
+      - name: Decompress python3.14
+        shell: bash
+        run: ./go/alpyne -i python:3.14-slim -k && tree IMG_python* -L 2
           
+      - name: Pull mysql
+        shell: bash
+        run: docker pull mysql:latest
+      
+      - name: Decompress mysql
+        shell: bash
+        run: ./go/alpyne -i mysql:latest -k && tree IMG_mysql_latest -L 2
