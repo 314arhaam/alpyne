@@ -58,24 +58,25 @@ jobs:
         run: |
           echo "Uploading data to Telegram..."
           IMG_NAME=${{ github.event.inputs.image_name }}
+          CAPTION="*Image:* \`$IMG_NAME\`"
           # short
           curl -s -X POST \
             -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
-            -F "caption=Decompressed `$IMG_NAME`" \
+            -F "caption=$CAPTION" \
             -F "parse_mode=MarkdownV2" \
             -F "document=@tree_l2.txt" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
           # long
           curl -s -X POST \
             -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
-            -F "caption=Decompressed `$IMG_NAME`" \
+            -F "caption=$CAPTION" \
             -F "parse_mode=MarkdownV2" \
             -F "document=@tree.json" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
           # alpyne output
           curl -s -X POST \
             -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
-            -F "caption=Decompressed `$IMG_NAME`" \
+            -F "caption=$CAPTION" \
             -F "parse_mode=MarkdownV2" \
             -F "document=@output.txt" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
