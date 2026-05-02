@@ -45,10 +45,10 @@ jobs:
           docker pull ${{ github.event.inputs.image_name }}
       - name: Decompress image
         shell: bash
-        run: ./go/alpyne -i ${{ github.event.inputs.image_name }} > output.txt
+        run: ./go/alpyne -i ${{ github.event.inputs.image_name }} # > output.txt
       - name: Show output
         shell: bash
-        run: cat output.txt
+        run: ls -lh
       - name: Generate tree files
         shell: bash
         run: tree IMG_* > tree.txt && tree IMG_* -L 2 > tree_l2.txt
@@ -84,20 +84,4 @@ jobs:
             -F "caption=$CAPTION" \
             -F "parse_mode=MarkdownV2" \
             -F "document=@tree.txt" \
-            "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
-
-      - name: Send output data to Telegram
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID_ME: ${{ secrets.TELEGRAM_CHAT_ID_ME }}
-        run: |
-          echo "Uploading data to Telegram..."
-          IMG_NAME=${{ github.event.inputs.image_name }}
-          CAPTION="*Image:* \`$IMG_NAME\`"
-          # short
-          curl -s -X POST \
-            -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
-            -F "caption=$CAPTION" \
-            -F "parse_mode=MarkdownV2" \
-            -F "document=@output.txt" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
