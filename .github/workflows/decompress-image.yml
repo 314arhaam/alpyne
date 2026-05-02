@@ -19,6 +19,10 @@ jobs:
             dir_name: IMG_redis_latest
           - image_name: python:3.14-slim
             dir_name: IMG_python_3_14-slim
+          - image_name: mysql:latest
+            dir_name: IMG_mysql_latest
+          - image_name: clickhouse/clickhouse-server
+            dir_name: IMG_clickhouse_clickhouse-server
     runs-on: ubuntu-22.04
     steps:
       
