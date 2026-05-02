@@ -46,8 +46,8 @@ func main() {
 	if err := dt.ReadManifest(&man, path.Join(dirName,"manifest.json")); err != nil {
 		log.Fatalf("main.go:", err)
 	}
-	// fmt.Println(man)
-	// fmt.Println(len(man[0].Layers))
+	fmt.Println("	-> Manifest count:	", len(man))
+	fmt.Println("	-> Manifest layers:	", man[0].Layers)
 	for i, layerSHA256Name := range man[0].Layers {
 		folderName := path.Join(dirName, "LAYER_" + strconv.Itoa(i+1))
 		layerFile := path.Join(dirName, layerSHA256Name)
