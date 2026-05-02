@@ -9,6 +9,16 @@ on:
 
 jobs:
   decompress_with_alpyne:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image_name: alpine:latest
+            dir_name: IMG_alpine_latest
+          - image_name: redis:latest
+            dir_name: IMG_redis_latest
+          - image_name: python:3.14-slim
+            dir_name: IMG_python:3.14-slim
     runs-on: ubuntu-22.04
     steps:
       
@@ -43,42 +53,10 @@ jobs:
           ls -lh
           chmod +x ./go/alpyne
       
-      - name: Pull alpine image
+      - name: Pull ${{ matrix.image_name }}
         shell: bash
-        run: docker pull alpine:latest
+        run: docker pull ${{ matrix.image_name }}
       
-      - name: Decompress alpine
+      - name: Decompress ${{ matrix.image_name }}
         shell: bash
-        run: ./go/alpyne -i alpine:latest -k && tree IMG_alpine_latest -L 2
-      
-      - name: Pull redis image
-        shell: bash
-        run: docker pull redis:latest
-      
-      - name: Decompress redis
-        shell: bash
-        run: ./go/alpyne -i redis:latest -k && tree IMG_redis_latest -L 2
-      
-      - name: Pull clickhouse image
-        shell: bash
-        run: docker pull clickhouse/clickhouse-server
-      
-      - name: Decompress clickhouse
-        shell: bash
-        run: ./go/alpyne -i clickhouse/clickhouse-server -k && tree IMG_click* -L 2
-
-      - name: Pull python3.14 image
-        shell: bash
-        run: docker pull python:3.14-slim
-      
-      - name: Decompress python3.14
-        shell: bash
-        run: ./go/alpyne -i python:3.14-slim -k && tree IMG_python* -L 2
-          
-      - name: Pull mysql
-        shell: bash
-        run: docker pull mysql:latest
-      
-      - name: Decompress mysql
-        shell: bash
-        run: ./go/alpyne -i mysql:latest -k && tree IMG_mysql_latest -L 2
+        run: ./go/alpyne -i ${{ matrix.image_name }} -k && tree -L 2 ${{ matrix.dir_name }}
