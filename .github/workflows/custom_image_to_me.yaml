@@ -44,7 +44,7 @@ jobs:
       - name: Decompress image
         shell: bash
         run: |
-          ./go/alpyne -i ${{ github.event.inputs.image_name }} -k
+          ./go/alpyne -i ${{ github.event.inputs.image_name }} >> output.txt
           tree IMG_* >> tree.txt
           tree IMG_* -L 2 >> tree_l2.txt
 
@@ -68,4 +68,11 @@ jobs:
             -F "caption=Decompressed `${{ github.event.inputs.image_name }}`" \
             -F "parse_mode=MarkdownV2" \
             -F "document=@tree.txt" \
+            "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
+          # alpyne output
+          curl -s -X POST \
+            -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
+            -F "caption=Decompressed `${{ github.event.inputs.image_name }}`" \
+            -F "parse_mode=MarkdownV2" \
+            -F "document=@output.txt" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
