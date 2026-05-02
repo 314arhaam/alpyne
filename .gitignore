@@ -5,3 +5,4 @@ check.go
 go.sum
 image_data/
 IMG_*
+pu*.sh
