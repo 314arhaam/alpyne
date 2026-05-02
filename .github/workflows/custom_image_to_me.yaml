@@ -45,8 +45,7 @@ jobs:
           docker pull ${{ github.event.inputs.image_name }}
       - name: Decompress image
         shell: bash
-        run: |
-          ./go/alpyne -i ${{ github.event.inputs.image_name }} > output.txt
+        run: ./go/alpyne -i ${{ github.event.inputs.image_name }} > output.txt
       - name: Show output
         shell: bash
         run: cat output.txt
