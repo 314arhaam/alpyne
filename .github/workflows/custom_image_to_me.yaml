@@ -46,10 +46,10 @@ jobs:
       - name: Decompress image
         shell: bash
         run: |
-          ./go/alpyne -i ${{ github.event.inputs.image_name }} >> output.txt
-          tree IMG_* >> tree.txt
-          tree IMG_* -L 2 >> tree_l2.txt
-          cat $(sudo find -name manifest.json $pwd | head -n 1) | jq > manifest.json
+          ./go/alpyne -i ${{ github.event.inputs.image_name }} > output.txt
+          tree IMG_* > tree.txt
+          tree IMG_* -L 2 > tree_l2.txt
+          # cat $(sudo find -name manifest.json $pwd | head -n 1) | jq > manifest.json
 
       - name: Send data to Telegram
         env:
@@ -61,21 +61,21 @@ jobs:
           # short
           curl -s -X POST \
             -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
-            -F "caption=Decompressed `IMG_NAME`" \
+            -F "caption=Decompressed `$IMG_NAME`" \
             -F "parse_mode=MarkdownV2" \
             -F "document=@tree_l2.txt" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
           # long
           curl -s -X POST \
             -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
-            -F "caption=Decompressed `IMG_NAME`" \
+            -F "caption=Decompressed `$IMG_NAME`" \
             -F "parse_mode=MarkdownV2" \
-            -F "document=@manifest.json" \
+            -F "document=@tree.json" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
           # alpyne output
           curl -s -X POST \
             -F "chat_id=$TELEGRAM_CHAT_ID_ME" \
-            -F "caption=Decompressed `IMG_NAME`" \
+            -F "caption=Decompressed `$IMG_NAME`" \
             -F "parse_mode=MarkdownV2" \
             -F "document=@output.txt" \
             "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument"
